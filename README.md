@@ -1,5 +1,5 @@
 # building-app
-a simple web app built with spring boot to represent a building
+This is a simple web app designed to represent buildings and built with spring boot, hibernate, and thymleaf.
 
 This application uses the gradle wrapper to build.  Ensure that you have internet, then run 'gradlew build' to build the application.  The gradle wrapper with pull all of the necessary resources and build the application into an Uber Jar which will be located in the build/libs directory.
 
