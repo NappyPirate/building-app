@@ -1,8 +1,4 @@
-﻿DROP TABLE room;
-DROP TABLE floor;
-DROP TABLE building;
-
-CREATE TABLE building (
+﻿CREATE TABLE building (
 	id integer PRIMARY KEY,
 	version bigint,
 	name varchar(256),
@@ -13,14 +9,12 @@ CREATE TABLE building (
 	owner varchar(40)
 );
 
-
 CREATE TABLE floor (
 	id integer PRIMARY KEY,
 	version bigint,
 	building_id integer REFERENCES building,
 	floor_number integer
 );
-
 
 CREATE TABLE room (
 	id integer PRIMARY KEY,
