@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+    layout:decorator="layout">
+    
+<head>
+    <title>Buildings : View</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1 layout:fragment="header">Building : View / Edit</h1>
+    <div th:if="${message}">
+        <p>hello</p>
+    </div>
+    <div layout:fragment="content">
+        <form action="#" th:action="@{/building}" th:object="${building}" method="post">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" class="form-control" th:field="*{name}" aria-describedby="basic-addon1" id="name"/>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control" th:field="*{address}" aria-describedby="basic-addon1" id="address"/>
+            </div>
+            
+            <div class="form-group">
+                <label for="city">City:</label>
+                <input type="text" class="form-control" th:field="*{city}" aria-describedby="basic-addon1" id="city"/>
+            </div>
+            
+            <div class="form-group">
+                <label for="state">State:</label>
+                <input type="text" class="form-control" th:field="*{state}" aria-describedby="basic-addon1" id="state"/>
+            </div>
+            
+            <div class="form-group">
+                <label for="zip">Zip Code:</label>
+                <input type="text" class="form-control" th:field="*{zip}" aria-describedby="basic-addon1" id="zip"/>
+            </div>
+            
+            <br/>
+            
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Floors</th>
+                        <th>Rooms</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <tr th:each="floor : *{floors}">
+                        <td>
+                            <p th:field="*{floors[__${floorStat.index}__].floorNumber}" th:text="*{floors[__${floorStat.index}__].floorNumber}" class="text-center"></p>
+                        </td>
+                        <td>
+                            <table class="table table-bordered table-striped">
+                                <tbody>
+                                    <tr th:each="room : *{floors[__${floorStat.index}__].rooms}">
+                                        <td>
+                                            <div class="form-group row">
+                                                <label class="col-md-2">Room Name:</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" th:field="*{floors[__${floorStat.index}__].rooms[__${roomStat.index}__].roomName}" class="form-control" aria-describedby="basic-addon1"/>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button id="removeRoom" name="removeRoom" type="submit" th:value="(*{floors[__${floorStat.index}__].floorNumber}) + |,| + (${roomStat.index})" class="btn btn-default">Remove Room</button>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button id="addRoom" name="addRoom" type="submit" value="addRoom" th:value="*{floors[__${floorStat.index}__].floorNumber}" class="btn btn-default">Add Room</button>
+                        </td>
+                        <td class="col-lg-1 col-md-1 col-sm-1">
+                            <button id="removeFloor" name="removeFloor" type="submit" th:value="*{floors[__${floorStat.index}__].floorNumber}"  class="btn btn-default">Remove Floor</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button id="addFloor" name="addFloor" type="submit" value="addFloor" class="btn btn-default pull-left">Add Floor</button>
+            <button id="save" name="save" type="submit" value="save" class="btn btn-default pull-right">Save</button>
+            <a href="building.html" th:href="@{/building(id=*{id})}" class="btn btn-default pull-right">Cancel</a>
+        </form>    
+    </div>
+</body>
+</html>

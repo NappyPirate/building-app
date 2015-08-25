@@ -1,6 +1,10 @@
+package building.models;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "building")
@@ -8,6 +12,7 @@ public class Building {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     @Version
@@ -31,8 +36,12 @@ public class Building {
     @Column(name = "owner")
     private String owner;
 
-    @OneToMany(mappedBy = "building")
-    private Set<Floor> floors;
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Floor> floors;
+    
+    public Building() {
+    
+    }
 
     public Building(String name, String address, String zip, String city, String state) {
         this.name = name;
@@ -41,17 +50,16 @@ public class Building {
         this.city = city;
         this.state = state;
 
-        
         if(this.floors == null) {
-            this.floors = new HashSet<Floor>();
+            this.floors = new ArrayList<Floor>();
         }
 
-        //create a new floor at ground level
         this.floors.add(
-                new Floor(
-                        1,
-                        this
-                ))
+            new Floor(
+                    1,
+                    this
+            )
+        );
     }
 
     public Long getId() {
@@ -110,30 +118,62 @@ public class Building {
         this.state = state;
     }
 
-    public Set<Floor> getFloors() {
-        return Floors;
+    public List<Floor> getFloors() {
+        return floors;
     }
 
-    public void setFloors(Set<Floor> floors) {
+    public void setFloors(List<Floor> floors) {
         this.floors = floors;
     }
 
     public void addFloor() {
-        Iterator floorIter = this.floors.Iterator();
-
         int max = 0;
 
-        while(floorIter.hasNext()){
-            Floor floor = floorIter.next();
-            Integer floorNum = floor.getFloorNumber();
+        for (Floor i : floors){
+            int floorNum = i.getFloorNumber();
 
             if (floorNum > max)
                 max = floorNum;
         }
 
         this.floors.add(
-            max + 1,
-            building
-        )
+            new Floor(
+                max + 1,
+                this
+            )
+        );
+    }
+    
+    public Floor getFloorByNumber(int floorNumber) {
+        int size = floors.size();
+        
+        for (int i = 0; i < size; i++) {
+            Floor floor = floors.get(i);
+            
+            if (floor.getFloorNumber() == floorNumber)
+                return floor;
+        }
+        
+        return null;
+    }
+    
+    public void removeFloorByNumber(int floorNumber) {
+        int size = floors.size();
+        
+        if(size > 1) {
+            int location = 0;
+            
+            for (int i = 0; i < size; i++) {
+                if (floors.get(i).getFloorNumber() == floorNumber)
+                    location = i;
+            }
+            
+            for (int j = size - 1; j > location; j--)
+            {
+                Floor floor = this.floors.get(j);
+                floor.setFloorNumber(floor.getFloorNumber() - 1);
+            }
+            this.floors.remove(location);
+        }
     }
 }

@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+    layout:decorator="layout">
+<head>
+    <title>Buildings : View All</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <h1 layout:fragment="header">Buildings : View all</h1>
+    <div layout:fragment="content">
+        <form action="/" th:action="@{/}" th:object="${buildingList}" method="post">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Zip Code</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${buildingList.empty}">
+                        <td colspan="6">
+                            No buildings
+                        </td>
+                    </tr>
+                    <tr th:each="building : ${buildingList}">
+                        <td>
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:if="${building.name.empty}" th:text="Blank"></a>
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:text="${building.name}"></a>
+                        </td>
+                  
+                        <td> 
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:if="${building.address.empty}" th:text="Blank"></a>
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:text="${building.address}"></a> 
+                        </td>
+                  
+                        <td> 
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:if="${building.city.empty}" th:text="Blank"></a>
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:text="${building.city}"></a> 
+                        </td>
+                  
+                        <td> 
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:if="${building.state.empty}" th:text="Blank"></a>
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:text="${building.state}"></a> 
+                        </td>
+                  
+                        <td> 
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:if="${building.zip.empty}" th:text="Blank"></a>
+                            <a href="/building" th:href="@{/building(id=${building.id})}" th:text="${building.zip}"></a> 
+                        </td>
+                        
+                        <td class="col-lg-1 col-md-1 col-sm-1">
+                            <button id="deleteBuilding" name="deleteBuilding" type="submit" th:value="${building.id}" class="btn btn-default">Delete Building</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="createBuilding" name="createBuilding" type="submit" class="btn btn-default">Create Building</button>
+        </form>
+    </div>
+</body>
+</html>

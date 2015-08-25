@@ -1,3 +1,5 @@
+package building.models;
+
 import javax.persistence.*;
 
 @Entity
@@ -6,23 +8,29 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
 
     @Version
     private Long version;
 
-    @Column(name = "room_number")
-    private String room_number;
+    @Column(name = "room_name")
+    private String roomName;
 
     @ManyToOne
+    @JoinColumn(name = "floor_id")
     private Floor floor;
+    
+    public Room() {
+    
+    }
 
-    public Room(Integer room_number, Floor floor) {
-        this.room_number = room_number;
+    public Room(String roomName, Floor floor) {
+        this.roomName = roomName;
         this.floor = floor;
     }
 
-     public Room(Floor floor) {
+    public Room(Floor floor) {
         this.floor = floor;
     }
 
@@ -42,15 +50,15 @@ public class Room {
         this.version = version;
     }
 
-    public String getRoomNumber() {
-        return room_number;
+    public String getRoomName() {
+        return roomName;
     }
 
-    public void setRoomNumber(Integer room_number) {
-        this.room_number = room_number;
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
-    public String getFloor() {
+    public Floor getFloor() {
         return floor;
     }
 
